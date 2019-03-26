@@ -89,9 +89,10 @@ static void domain_list_ops(struct domin_info_update *msg,unsigned int hashValue
 
     while(find){
         if (find->hashValue == hashValue &&
-            strcmp(find->domain_name,msg->domain_name)==0&&
-            strcmp(find->zone_name,msg->zone_name)==0&&
-            strcmp(find->host,msg->host)==0){
+            strcmp(find->domain_name,msg->domain_name)==0 &&
+            strcmp(find->zone_name,msg->zone_name)==0 &&
+            strcmp(find->host,msg->host)==0 &&
+            strcmp(find->view_name,msg->view_name)==0){
             break;
         }
         pre = find;
@@ -201,7 +202,7 @@ void domain_msg_ring_create(void){
 }
 
 
-void doman_msg_master_process(void){
+void domain_msg_master_process(void){
     
     struct domin_info_update *msg;   
     unsigned cid_master = get_master_lcore_id();
@@ -244,7 +245,7 @@ void doman_msg_master_process(void){
     }   
 }
 
-void doman_msg_slave_process(void){
+void domain_msg_slave_process(void){
     struct domin_info_update *msg;   
     unsigned cid = rte_lcore_id();    
     while (0 == rte_ring_dequeue(domian_msg_ring[cid], (void **)&msg)) {   
@@ -615,13 +616,13 @@ static void* domains_get( __attribute__((unused)) struct connection_info_struct 
                 case TYPE_A:
                     value = json_pack("{s:s, s:s, s:s, s:s, s:s, s:i, s:i, s:i, s:i}", "type","A",
                     "domainName", domain_info->domain_name, "host", domain_info->host, "zoneName", domain_info->zone_name,
-                    "view",domain_info->view_name,"ttl", domain_info->ttl,"maxAnswer", domain_info->maxAnswer,
+                    "viewName",domain_info->view_name,"ttl", domain_info->ttl,"maxAnswer", domain_info->maxAnswer,
                     "lbMode",domain_info->lb_mode,"lbWeight",domain_info->lb_weight);
                     break;    
                 case TYPE_AAAA:
                     value = json_pack("{s:s, s:s, s:s, s:s, s:s, s:i, s:i, s:i, s:i}", "type","AAAA",
                     "domainName", domain_info->domain_name, "host", domain_info->host, "zoneName", domain_info->zone_name,
-                    "view",domain_info->view_name,"ttl", domain_info->ttl,"maxAnswer", domain_info->maxAnswer,
+                    "viewName",domain_info->view_name,"ttl", domain_info->ttl,"maxAnswer", domain_info->maxAnswer,
                     "lbMode",domain_info->lb_mode,"lbWeight",domain_info->lb_weight);
                     break; 
                  case TYPE_PTR:
@@ -699,13 +700,13 @@ static void* domain_get( __attribute__((unused)) struct connection_info_struct *
                 case TYPE_A:
                     value = json_pack("{s:s, s:s, s:s, s:s, s:s, s:i, s:i, s:i, s:i}", "type","A",
                     "domainName", domain_info->domain_name, "host", domain_info->host, "zoneName", domain_info->zone_name,
-                    "view",domain_info->view_name,"ttl", domain_info->ttl,"maxAnswer", domain_info->maxAnswer,
+                    "viewName",domain_info->view_name,"ttl", domain_info->ttl,"maxAnswer", domain_info->maxAnswer,
                     "lbMode",domain_info->lb_mode,"lbWeight",domain_info->lb_weight);
                     break;    
                 case TYPE_AAAA:
                     value = json_pack("{s:s, s:s, s:s, s:s, s:s, s:i, s:i, s:i, s:i}", "type","AAAA",
                     "domainName", domain_info->domain_name, "host", domain_info->host, "zoneName", domain_info->zone_name,
-                    "view",domain_info->view_name,"ttl", domain_info->ttl,"maxAnswer", domain_info->maxAnswer,
+                    "viewName",domain_info->view_name,"ttl", domain_info->ttl,"maxAnswer", domain_info->maxAnswer,
                     "lbMode",domain_info->lb_mode,"lbWeight",domain_info->lb_weight);
                     break;
                  case TYPE_PTR:
